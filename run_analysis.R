@@ -43,20 +43,21 @@ merge_train = cbind(ytrain, subject_train, xtrain)
 masterdataset = rbind(merge_train, merge_test)
 
 
-# Need step is t values that are availableo read all the
+# New dataset is now called masterdataset, look at names
 colNames = colnames(masterdataset)
 colNames
-#Extract measurements on the mean and standard deviations for each measurement.
+#Extract measurements on the mean and standard deviations for each measurement (Assignment objective #2).
 meanstd = (grepl("activityId" , colNames) | grepl("subjectId" , colNames) | grepl("mean.." , colNames) | grepl("std.." , colNames))
-#And subset this out.
+#And subset this out, new subset is called meanandstd.
 meanandstd <- masterdataset[ , meanstd == TRUE]
 
-#Use descriptive activity names to name the activiiteis in the dataset
+#Use descriptive activity names to name the activiiteis in the dataset (Assignment objective #3)
 activitynames = merge(meanandstd, activityLabels, by='activityId', all.x=TRUE)
 
-# New tidy set has to be created 
+# New tidy set has to be created (calling it myTidySet)
 myTidySet <- aggregate(. ~subjectId + activityId, activitynames, mean)
 myTidySet <- myTidySet[order(myTidySet$subjectId, myTidySet$activityId),]
 
 #The last step is to write the ouput to a text file 
 write.table(myTidySet, "myTidySet.txt", row.name=FALSE)
+#now a .txt file should be located in your working directory called myTidySet.txt...I hope it worked for you :)
